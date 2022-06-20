@@ -41,6 +41,17 @@ class Board {
     }
 
     func display() -> String {
-        return ""
+        var displayText = ""
+        for y in 0..<size {
+            for x in 0..<size {
+                displayText += String(pieces[.init(x: x, y: y)]?.symbol ?? ".")
+            }
+
+            if y < size - 1 {
+                displayText += "\n"
+            }
+        }
+
+        return displayText
     }
 }

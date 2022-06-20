@@ -49,4 +49,21 @@ class chessgameTests: XCTestCase {
         XCTAssertEqual(board4.allScore(), "white: 10\nblack: 4")
     }
 
+    func testBoardDisplay() throws {
+        let board1 = Board()
+        try board1.add(piece: Pawn(color: .black), to: .init(x: 0, y: 1))
+        try board1.add(piece: Pawn(color: .black), to: .init(x: 1, y: 1))
+        try board1.add(piece: Pawn(color: .black), to: .init(x: 2, y: 1))
+
+        XCTAssertEqual(board1.display(), "........\n♟♟♟.....\n........\n........\n........\n........\n........\n........")
+
+        let board2 = Board()
+        try board2.add(piece: Pawn(color: .black), to: .init(x: 0, y: 2))
+        try board2.add(piece: Bishop(color: .white), to: .init(x: 1, y: 2))
+        try board2.add(piece: Queen(color: .black), to: .init(x: 2, y: 2))
+        try board2.add(piece: Knight(color: .white), to: .init(x: 3, y: 2))
+
+        XCTAssertEqual(board2.display(), "........\n........\n♟♗♛♘....\n........\n........\n........\n........\n........")
+    }
+
 }
