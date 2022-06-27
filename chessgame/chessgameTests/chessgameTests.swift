@@ -77,13 +77,13 @@ class chessgameTests: XCTestCase {
         let whiteQueen = Queen(color: .white)
         let blackQueen = Queen(color: .black)
 
-        XCTAssertNoThrow(try board.add(piece: whitePawn, to: .init(file: 1, rank: 2)))
+        XCTAssertNoThrow(try board.add(piece: whitePawn, to: .init(file: "A", rank: 2)))
         XCTAssertNoThrow(try board.add(piece: whitePawn, to: .init(file: 2, rank: 2)))
-        XCTAssertNoThrow(try board.add(piece: whitePawn, to: .init(file: 3, rank: 2)))
+        XCTAssertNoThrow(try board.add(piece: whitePawn, to: .init(file: "C", rank: 2)))
         XCTAssertNoThrow(try board.add(piece: whitePawn, to: .init(file: 4, rank: 2)))
-        XCTAssertNoThrow(try board.add(piece: whitePawn, to: .init(file: 5, rank: 2)))
+        XCTAssertNoThrow(try board.add(piece: whitePawn, to: .init(file: "e", rank: 2)))
         XCTAssertNoThrow(try board.add(piece: whitePawn, to: .init(file: 6, rank: 2)))
-        XCTAssertNoThrow(try board.add(piece: whitePawn, to: .init(file: 7, rank: 2)))
+        XCTAssertNoThrow(try board.add(piece: whitePawn, to: .init(file: "g", rank: 2)))
         XCTAssertNoThrow(try board.add(piece: whitePawn, to: .init(file: 8, rank: 2)))
 
         XCTAssertNoThrow(try board.add(piece: blackPawn, to: .init(file: 1, rank: 3)))
@@ -94,7 +94,7 @@ class chessgameTests: XCTestCase {
 
         XCTAssertNoThrow(try board.add(piece: blackQueen, to: .init(file: 4, rank: 8)))
 
-        XCTAssertThrowsError(try board.add(piece: whiteQueen, to: .init(file: 5, rank: 1)))
+        XCTAssertThrowsError(try board.add(piece: whiteQueen, to: .init(file: "E", rank: 1)))
     }
 
     func test체스판초기화() throws {

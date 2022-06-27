@@ -21,11 +21,6 @@ class Board {
         return !pieces.isEmpty
     }
 
-    private func score(for color: PieceColor) -> Int {
-
-        return pieces.filter({ $0.value.color == color }).reduce(0, { $0 + type(of: $1.value).score })
-    }
-
     func initializePieces() throws {
         pieces = [:]
 
@@ -89,6 +84,11 @@ class Board {
         }.joined(separator: "\n")
 
         return scoreText
+    }
+
+    private func score(for color: PieceColor) -> Int {
+
+        return pieces.filter({ $0.value.color == color }).reduce(0, { $0 + type(of: $1.value).score })
     }
 
     func display() -> String {
