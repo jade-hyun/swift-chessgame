@@ -28,9 +28,9 @@ struct Position: Hashable {
         self.rank = rank
     }
 
-    init(file: Int, rank: Character) {
-        self.file = file
-        self.rank = Int((rank.uppercased().utf8.first ?? 65) - 65)
+    init(file: Character, rank: Int) {
+        self.file = Int((file.uppercased().utf8.first ?? 65) - 64)
+        self.rank = rank
     }
 }
 
