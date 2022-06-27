@@ -9,9 +9,26 @@ import UIKit
 
 class ViewController: UIViewController {
 
+    let boardView = BoardView()
+    let board = Board()
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+
+        view.addSubview(boardView)
+
+        boardView.translatesAutoresizingMaskIntoConstraints = false
+        boardView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+        boardView.widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true
+        boardView.heightAnchor.constraint(equalTo: boardView.widthAnchor).isActive = true
+
+        do {
+            try board.initializePieces()
+        } catch {
+            print("보드를 초기화 할 수 없음", error)
+        }
+
+        boardView.pieces = board.pieces
     }
 
 

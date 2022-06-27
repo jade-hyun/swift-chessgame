@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0741DDBD2869995200107EAD /* BoardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0741DDBC2869995200107EAD /* BoardView.swift */; };
 		07EDF8DF28605A0100361460 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07EDF8DE28605A0100361460 /* AppDelegate.swift */; };
 		07EDF8E128605A0100361460 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07EDF8E028605A0100361460 /* SceneDelegate.swift */; };
 		07EDF8E328605A0100361460 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07EDF8E228605A0100361460 /* ViewController.swift */; };
@@ -29,6 +30,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0741DDBC2869995200107EAD /* BoardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardView.swift; sourceTree = "<group>"; };
 		07EDF8DB28605A0100361460 /* chessgame.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = chessgame.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		07EDF8DE28605A0100361460 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		07EDF8E028605A0100361460 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -91,6 +93,7 @@
 				07EDF8EC28605A0200361460 /* Info.plist */,
 				07EDF90E28605A4200361460 /* Board.swift */,
 				07EDF91028605A5A00361460 /* Piece.swift */,
+				0741DDBC2869995200107EAD /* BoardView.swift */,
 			);
 			path = chessgame;
 			sourceTree = "<group>";
@@ -207,6 +210,7 @@
 				07EDF8E328605A0100361460 /* ViewController.swift in Sources */,
 				07EDF8DF28605A0100361460 /* AppDelegate.swift in Sources */,
 				07EDF91128605A5A00361460 /* Piece.swift in Sources */,
+				0741DDBD2869995200107EAD /* BoardView.swift in Sources */,
 				07EDF90F28605A4200361460 /* Board.swift in Sources */,
 				07EDF8E128605A0100361460 /* SceneDelegate.swift in Sources */,
 			);
