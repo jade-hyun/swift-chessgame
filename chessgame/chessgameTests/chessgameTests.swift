@@ -68,7 +68,7 @@ class chessgameTests: XCTestCase {
         XCTAssertEqual(board2.display(), "........\n........\n♟♗♛♘....\n........\n........\n........\n........\n........")
     }
 
-    func test체스말추가제한() throws {
+    func test체스말추가제한() {
         let board = Board()
 
         let whitePawn = Pawn(color: .white)
@@ -97,7 +97,7 @@ class chessgameTests: XCTestCase {
         XCTAssertThrowsError(try board.add(piece: whiteQueen, to: .init(file: "E", rank: 1)))
     }
 
-    func test체스판초기화() throws {
+    func test체스판초기화() {
         let board = Board()
 
         XCTAssertFalse(board.isPieceExists)
@@ -114,20 +114,38 @@ class chessgameTests: XCTestCase {
         let blackPawn = Pawn(color: .black)
         let whitePawn = Pawn(color: .white)
 
-        XCTAssertEqual(blackPawn.availables(for: currentPosition, boardSize: Board.size).sorted(), [Position(file: 1, rank: 2)])
-        XCTAssertEqual(whitePawn.availables(for: currentPosition, boardSize: Board.size).sorted(), [])
+        XCTAssertEqual(blackPawn.availables(for: currentPosition, boardSize: Board.size).map(\.finalPosition).sorted(), [Position(file: 1, rank: 2)])
+        XCTAssertEqual(whitePawn.availables(for: currentPosition, boardSize: Board.size).map(\.finalPosition).sorted(), [])
 
         let currentPosition2 = Position(file: 2, rank: 2)
         let knight = Knight(color: .black)
         let expected2 = [Position(file: 4, rank: 1), Position(file: 4, rank: 3), Position(file: 3, rank: 4), Position(file: 1, rank: 4)].sorted()
 
-        XCTAssertEqual(knight.availables(for: currentPosition2, boardSize: Board.size).sorted(), expected2)
+        XCTAssertEqual(knight.availables(for: currentPosition2, boardSize: Board.size).map(\.finalPosition).sorted(), expected2)
 
         let currentPosition3 = Position(file: 4, rank: 4)
         let bishop = Bishop(color: .white)
         let expected3 = [Position(file: 1, rank: 1), Position(file: 2, rank: 2), Position(file: 3, rank: 3), Position(file: 5, rank: 3), Position(file: 6, rank: 2), Position(file: 7, rank: 1), Position(file: 3, rank: 5), Position(file: 2, rank: 6), Position(file: 1, rank: 7), Position(file: 5, rank: 5), Position(file: 6, rank: 6), Position(file: 7, rank: 7), Position(file: 8, rank: 8)].sorted()
 
-        XCTAssertEqual(bishop.availables(for: currentPosition3, boardSize: Board.size).sorted(), expected3)
+        XCTAssertEqual(bishop.availables(for: currentPosition3, boardSize: Board.size).map(\.finalPosition).sorted(), expected3)
     }
 
+    func test보드에서말이동가능한지() throws {
+        let board = Board()
+        try board.initializePieces()
+
+        let blackKnightPostion = Position(file: 2, rank: 1)
+        let blackKnight = board.pieces[blackKnightPostion]!
+
+        let blackPawnPosition = Position(file: 2, rank: 2)
+        let blackPawn = board.pieces[blackPawnPosition]!
+
+        let availablePath = blackKnight.availables(for: blackKnightPostion, boardSize: type(of: board).size).sorted(by: { $0.finalPosition < $1.finalPosition }).last!.path
+
+        XCTAssertFalse(try board.move(from: blackKnightPostion, path: availablePath))
+
+        XCTAssertTrue(try board.move(from: blackPawnPosition, path: blackPawn.availables(for: blackPawnPosition, boardSize: type(of: board).size).first!.path))
+
+        XCTAssertTrue(try board.move(from: blackKnightPostion, path: availablePath))
+    }
 }

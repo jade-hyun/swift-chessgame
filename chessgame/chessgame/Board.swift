@@ -11,11 +11,12 @@ enum BoardError: Error {
     case 유효하지않은위치에추가
     case 해당위치에말존재
     case 이미최대로추가
+    case 없는말을이동
 }
 
 class Board {
     static let size = 8
-    private var pieces: [Position: Piece] = [:]
+    private(set) var pieces: [Position: Piece] = [:]
 
     var isPieceExists: Bool {
         return !pieces.isEmpty
@@ -75,6 +76,42 @@ class Board {
         }
 
         pieces[position] = piece
+    }
+
+    @discardableResult
+    func remove(position: Position) -> Piece? {
+        let piece = pieces[position]
+        pieces[position] = nil
+
+        return piece
+    }
+
+    func move(from: Position, path: [Position]) throws -> Bool {
+        var newPosition = from
+
+        let result = path.enumerated().allSatisfy { index, moveTo in
+            newPosition = newPosition + moveTo
+
+            guard newPosition.isInBoard(Self.size) else {
+                return false
+            }
+
+            guard index == path.count - 1 else {
+                return pieces[newPosition] == nil
+            }
+
+            return pieces[newPosition]?.color != pieces[from]?.color
+        }
+
+        if result {
+            remove(position: newPosition)
+            guard let piece = remove(position: from) else {
+                throw BoardError.없는말을이동
+            }
+            try add(piece: piece, to: newPosition)
+        }
+
+        return result
     }
 
     func allScore() -> String {

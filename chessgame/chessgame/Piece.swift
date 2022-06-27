@@ -20,15 +20,15 @@ protocol Piece {
     var symbol: Character { get }
     var paths: [[Position]] { get }
 
-    func availables(for currentPosition: Position, boardSize: Int) -> [Position]
+    func availables(for currentPosition: Position, boardSize: Int) -> [(path: [Position], finalPosition: Position)]
 }
 
 extension Piece {
-    func availables(for currentPosition: Position, boardSize: Int) -> [Position] {
+    func availables(for currentPosition: Position, boardSize: Int) -> [(path: [Position], finalPosition: Position)] {
         return paths.map { path in
-            return path.reduce(currentPosition, +)
-        }.filter { position in
-            return position.isInBoard(boardSize)
+            return (path, path.reduce(currentPosition, +))
+        }.filter { _, finalPosition in
+            return finalPosition.isInBoard(boardSize)
         }
     }
 }
