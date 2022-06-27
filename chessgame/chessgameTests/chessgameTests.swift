@@ -18,6 +18,16 @@ class chessgameTests: XCTestCase {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
 
+    func test보드에말이있는지() throws {
+        let board1 = Board()
+        XCTAssertFalse(board1.isPieceExists)
+
+        let board2 = Board()
+        try board2.add(piece: Pawn(color: .black), to: .init(x: 0, y: 0))
+
+        XCTAssertTrue(board2.isPieceExists)
+    }
+
     func testBoardScore() throws {
         let board1 = Board()
         try board1.add(piece: Pawn(color: .black), to: .init(x: 0, y: 1))
