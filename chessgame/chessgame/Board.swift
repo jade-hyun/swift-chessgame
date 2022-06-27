@@ -86,6 +86,26 @@ class Board {
         return piece
     }
 
+    func canMove(from: Position, path: [Position]) -> Bool {
+        var newPosition = from
+
+        let result = path.enumerated().allSatisfy { index, moveTo in
+            newPosition = newPosition + moveTo
+
+            guard newPosition.isInBoard(Self.size) else {
+                return false
+            }
+
+            guard index == path.count - 1 else {
+                return pieces[newPosition] == nil
+            }
+
+            return pieces[newPosition]?.color != pieces[from]?.color
+        }
+
+        return result
+    }
+
     func move(from: Position, path: [Position]) throws -> Bool {
         var newPosition = from
 

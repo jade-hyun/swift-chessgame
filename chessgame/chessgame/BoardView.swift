@@ -7,8 +7,15 @@
 
 import UIKit
 
+protocol BoardViewDelegate: AnyObject {
+    func pieceDidSelect(_ boardView: BoardView, position: Position)
+}
+
 final class BoardView: UIView {
+    weak var delegate: BoardViewDelegate?
+
     private let rankStackView = UIStackView()
+
     var pieces: [Position: Piece] = [:] {
         didSet {
             updateBoard()
@@ -44,29 +51,74 @@ final class BoardView: UIView {
             rankStackView.addArrangedSubview(fileStackView)
 
             for file in 1...8 {
-                let label = UILabel()
-                label.tag = (rank << 4) | file
-                label.textAlignment = .center
-                label.layer.borderWidth = 1 / UIScreen.main.scale
-                label.layer.borderColor = UIColor.black.cgColor
+                let button = UIButton()
+                button.tag = (rank << 4) | file
+                button.layer.borderWidth = 1 / UIScreen.main.scale
+                button.layer.borderColor = UIColor.black.cgColor
+                button.setTitleColor(.black, for: .normal)
+                button.addTarget(self, action: #selector(selected(_:)), for: .touchUpInside)
 
-                fileStackView.addArrangedSubview(label)
+                fileStackView.addArrangedSubview(button)
             }
         }
+    }
+
+    @objc
+    private func selected(_ button: UIButton) {
+        guard button.tag > 0 else {
+            return
+        }
+
+        let file = button.tag & 0xf
+        let rank = button.tag >> 4
+
+        delegate?.pieceDidSelect(self, position: Position(file: file, rank: rank))
     }
 
     private func updateBoard() {
         for rank in 1...8 {
             for file in 1...8 {
-                guard let label = self.viewWithTag((rank << 4) | file) as? UILabel else {
+                guard let button = button(forRank: rank, file: file) else {
                     continue
                 }
 
                 if let piece = pieces[Position(file: file, rank: rank)] {
-                    label.text = String(piece.symbol)
+                    button.setTitle(String(piece.symbol), for: .normal)
                 } else {
-                    label.text = nil
+                    button.setTitle(nil, for: .normal)
                 }
+            }
+        }
+    }
+
+    private func button(forRank: Int, file: Int) -> UIButton? {
+        return viewWithTag((forRank << 4) | file) as? UIButton
+    }
+
+    private func button(for position: Position) -> UIButton? {
+        return button(forRank: position.rank, file: position.file)
+    }
+
+    func emphasize(positions: [Position], color: UIColor = .red) {
+        positions.forEach { position in
+            guard let button = button(for: position) else {
+                return
+            }
+
+            button.layer.borderColor = color.cgColor
+            button.layer.borderWidth = 2 / UIScreen.main.scale
+        }
+    }
+
+    func clearEmphasize() {
+        for rank in 1...8 {
+            for file in 1...8 {
+                guard let button = button(forRank: rank, file: file) else {
+                    continue
+                }
+
+                button.layer.borderColor = UIColor.black.cgColor
+                button.layer.borderWidth = 1 / UIScreen.main.scale
             }
         }
     }

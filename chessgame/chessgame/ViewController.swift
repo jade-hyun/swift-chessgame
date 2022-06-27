@@ -22,6 +22,8 @@ class ViewController: UIViewController {
         boardView.widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true
         boardView.heightAnchor.constraint(equalTo: boardView.widthAnchor).isActive = true
 
+        boardView.delegate = self
+
         do {
             try board.initializePieces()
         } catch {
@@ -32,5 +34,22 @@ class ViewController: UIViewController {
     }
 
 
+}
+
+extension ViewController: BoardViewDelegate {
+    func pieceDidSelect(_ boardView: BoardView, position: Position) {
+        boardView.clearEmphasize()
+
+        if let piece = board.pieces[position] {
+            let candidates = piece.availables(for: position, boardSize: type(of: board).size)
+
+            let availables = candidates.filter { path, _ in
+                board.canMove(from: position, path: path)
+            }.map(\.finalPosition)
+
+            boardView.emphasize(positions: [position], color: .blue)
+            boardView.emphasize(positions: availables)
+        }
+    }
 }
 
