@@ -106,7 +106,7 @@ final class BoardView: UIView {
             }
 
             button.layer.borderColor = color.cgColor
-            button.layer.borderWidth = 2 / UIScreen.main.scale
+            button.layer.borderWidth = 2
         }
     }
 

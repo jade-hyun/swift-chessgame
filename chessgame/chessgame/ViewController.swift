@@ -12,6 +12,8 @@ class ViewController: UIViewController {
     let boardView = BoardView()
     let board = Board()
 
+    private var selectedPosition: Position?
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -40,15 +42,44 @@ extension ViewController: BoardViewDelegate {
     func pieceDidSelect(_ boardView: BoardView, position: Position) {
         boardView.clearEmphasize()
 
-        if let piece = board.pieces[position] {
+        if let selectedPosition = selectedPosition, let piece = board.pieces[selectedPosition] {
+            self.selectedPosition = nil
+
+            let candidates = piece.availables(for: selectedPosition, boardSize: type(of: board).size)
+            let path = candidates
+                .filter { _, finalPosition in
+                    finalPosition == position
+                }.map(\.path)
+                .first
+
+            guard let path = path else {
+                self.selectedPosition = nil
+                return
+            }
+
+            do {
+                let result = try board.move(from: selectedPosition, path: path)
+
+                if !result {
+                    UIImpactFeedbackGenerator(style: .heavy).impactOccurred()
+                }
+
+                boardView.pieces = board.pieces
+            } catch {
+                print("기존에 선택된 위치에 말이 존재하지 않음", error)
+            }
+        } else if let piece = board.pieces[position] {
             let candidates = piece.availables(for: position, boardSize: type(of: board).size)
 
-            let availables = candidates.filter { path, _ in
-                board.canMove(from: position, path: path)
-            }.map(\.finalPosition)
+            let availables = candidates
+                .filter { path, _ in
+                    board.canMove(from: position, path: path)
+                }.map(\.finalPosition)
 
             boardView.emphasize(positions: [position], color: .blue)
             boardView.emphasize(positions: availables)
+
+            selectedPosition = position
         }
     }
 }
