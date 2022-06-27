@@ -13,18 +13,31 @@ enum PieceColor: CaseIterable {
 }
 
 protocol Piece {
-    var score: Int { get }
+    static var score: Int { get }
+    static var maxCount: Int { get }
     var color: PieceColor { get }
     var symbol: Character { get }
 }
 
 struct Position: Hashable {
-    let x: Int
-    let y: Int
+    let file: Int
+    let rank: Int
+
+    init(file: Int, rank: Int) {
+        self.file = file
+        self.rank = rank
+    }
+
+    init(file: Int, rank: Character) {
+        self.file = file
+        self.rank = Int((rank.uppercased().utf8.first ?? 65) - 65)
+    }
 }
 
 struct Pawn: Piece {
-    let score = 1
+    static let score = 1
+    static let maxCount = 8
+
     let color: PieceColor
 
     var symbol: Character {
@@ -38,7 +51,9 @@ struct Pawn: Piece {
 }
 
 struct Knight: Piece {
-    let score = 3
+    static let score = 3
+    static let maxCount = 2
+
     let color: PieceColor
 
     var symbol: Character {
@@ -52,7 +67,9 @@ struct Knight: Piece {
 }
 
 struct Bishop: Piece {
-    let score = 3
+    static let score = 3
+    static let maxCount = 2
+
     let color: PieceColor
 
     var symbol: Character {
@@ -65,8 +82,10 @@ struct Bishop: Piece {
     }
 }
 
-struct Luke: Piece {
-    let score = 5
+struct Rook: Piece {
+    static let score = 5
+    static let maxCount = 2
+
     let color: PieceColor
 
     var symbol: Character {
@@ -80,7 +99,9 @@ struct Luke: Piece {
 }
 
 struct Queen: Piece {
-    let score = 9
+    static let score = 9
+    static let maxCount = 1
+    
     let color: PieceColor
 
     var symbol: Character {

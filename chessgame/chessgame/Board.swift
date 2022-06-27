@@ -9,6 +9,7 @@ import Foundation
 
 enum BoardError: Error {
     case 해당위치에말존재
+    case 이미최대로추가
 }
 
 class Board {
@@ -20,12 +21,17 @@ class Board {
     }
 
     private func score(for color: PieceColor) -> Int {
-        return pieces.filter({ $0.value.color == color }).reduce(0, { $0 + $1.value.score })
+
+        return pieces.filter({ $0.value.color == color }).reduce(0, { $0 + type(of: $1.value).score })
     }
 
     func add(piece: Piece, to position: Position) throws {
         guard pieces[position] == nil else {
             throw BoardError.해당위치에말존재
+        }
+
+        guard pieces.filter({ type(of: $0.value) == type(of: piece) && $0.value.color == piece.color }).count < type(of: piece).maxCount else {
+            throw BoardError.이미최대로추가
         }
 
         pieces[position] = piece
@@ -44,7 +50,7 @@ class Board {
         var displayText = ""
         for y in 0..<size {
             for x in 0..<size {
-                displayText += String(pieces[.init(x: x, y: y)]?.symbol ?? ".")
+                displayText += String(pieces[.init(file: x, rank: y)]?.symbol ?? ".")
             }
 
             if y < size - 1 {
