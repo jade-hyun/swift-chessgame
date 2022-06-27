@@ -109,4 +109,25 @@ class chessgameTests: XCTestCase {
         XCTAssertEqual(board.display(), "♜♞♝.♛♝♞♜\n♟♟♟♟♟♟♟♟\n........\n........\n........\n........\n♙♙♙♙♙♙♙♙\n♖♘♗.♕♗♘♖")
     }
 
+    func test체스말이동가능한위치() {
+        let currentPosition = Position(file: 1, rank: 1)
+        let blackPawn = Pawn(color: .black)
+        let whitePawn = Pawn(color: .white)
+
+        XCTAssertEqual(blackPawn.availables(for: currentPosition, boardSize: Board.size).sorted(), [Position(file: 1, rank: 2)])
+        XCTAssertEqual(whitePawn.availables(for: currentPosition, boardSize: Board.size).sorted(), [])
+
+        let currentPosition2 = Position(file: 2, rank: 2)
+        let knight = Knight(color: .black)
+        let expected2 = [Position(file: 4, rank: 1), Position(file: 4, rank: 3), Position(file: 3, rank: 4), Position(file: 1, rank: 4)].sorted()
+
+        XCTAssertEqual(knight.availables(for: currentPosition2, boardSize: Board.size).sorted(), expected2)
+
+        let currentPosition3 = Position(file: 4, rank: 4)
+        let bishop = Bishop(color: .white)
+        let expected3 = [Position(file: 1, rank: 1), Position(file: 2, rank: 2), Position(file: 3, rank: 3), Position(file: 5, rank: 3), Position(file: 6, rank: 2), Position(file: 7, rank: 1), Position(file: 3, rank: 5), Position(file: 2, rank: 6), Position(file: 1, rank: 7), Position(file: 5, rank: 5), Position(file: 6, rank: 6), Position(file: 7, rank: 7), Position(file: 8, rank: 8)].sorted()
+
+        XCTAssertEqual(bishop.availables(for: currentPosition3, boardSize: Board.size).sorted(), expected3)
+    }
+
 }

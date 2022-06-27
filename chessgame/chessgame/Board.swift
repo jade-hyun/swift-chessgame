@@ -14,7 +14,7 @@ enum BoardError: Error {
 }
 
 class Board {
-    private let size = 8
+    static let size = 8
     private var pieces: [Position: Piece] = [:]
 
     var isPieceExists: Bool {
@@ -30,7 +30,7 @@ class Board {
         let blackRook = Rook(color: .black)
         let blackQueen = Queen(color: .black)
 
-        for file in 1...size {
+        for file in 1...Self.size {
             try add(piece: blackPawn, to: .init(file: file, rank: 2))
         }
 
@@ -48,7 +48,7 @@ class Board {
         let whiteRook = Rook(color: .white)
         let whiteQueen = Queen(color: .white)
 
-        for file in 1...size {
+        for file in 1...Self.size {
             try add(piece: whitePawn, to: .init(file: file, rank: 7))
         }
 
@@ -62,7 +62,7 @@ class Board {
     }
 
     func add(piece: Piece, to position: Position) throws {
-        guard 1...size ~= position.rank && 1...size ~= position.file else {
+        guard position.isInBoard(Self.size) else {
             throw BoardError.유효하지않은위치에추가
         }
 
@@ -93,12 +93,12 @@ class Board {
 
     func display() -> String {
         var displayText = ""
-        for rank in 1...size {
-            for file in 1...size {
+        for rank in 1...Self.size {
+            for file in 1...Self.size {
                 displayText += String(pieces[.init(file: file, rank: rank)]?.symbol ?? ".")
             }
 
-            if rank < size {
+            if rank < Self.size {
                 displayText += "\n"
             }
         }
