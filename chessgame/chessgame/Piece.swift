@@ -52,6 +52,17 @@ struct Position: Hashable {
     }
 }
 
+extension Position {
+    static let up: Position = .init(file: 0, rank: -1)
+    static let down: Position = .init(file: 0, rank: 1)
+    static let left: Position = .init(file: -1, rank: 0)
+    static let right: Position = .init(file: 1, rank: 0)
+    static let leftUp: Position = .left + .up
+    static let leftDown: Position = .left + .down
+    static let rightUp: Position = .right + .up
+    static let rightDown: Position = .right + .down
+}
+
 extension Position: Comparable {
     static func < (lhs: Position, rhs: Position) -> Bool {
         if lhs.rank == rhs.rank {
@@ -84,9 +95,9 @@ struct Pawn: Piece {
     var paths: [[Position]] {
         switch color {
         case .white:
-            return [[.init(file: 0, rank: -1)]]
+            return [[.up]]
         case .black:
-            return [[.init(file: 0, rank: 1)]]
+            return [[.down]]
         }
     }
 }
@@ -108,14 +119,14 @@ struct Knight: Piece {
 
     var paths: [[Position]] {
         return [
-            [.init(file: 0, rank: 1), .init(file: -1, rank: 1)],
-            [.init(file: 0, rank: 1), .init(file: 1, rank: 1)],
-            [.init(file: 1, rank: 0), .init(file: 1, rank: 1)],
-            [.init(file: 1, rank: 0), .init(file: 1, rank: -1)],
-            [.init(file: 0, rank: -1), .init(file: 1, rank: -1)],
-            [.init(file: 0, rank: -1), .init(file: -1, rank: -1)],
-            [.init(file: -1, rank: 0), .init(file: -1, rank: -1)],
-            [.init(file: -1, rank: 0), .init(file: -1, rank: 1)]
+            [.up, .leftUp],
+            [.up, .rightUp],
+            [.right, .rightUp],
+            [.right, .rightDown],
+            [.down, .rightDown],
+            [.down, .leftDown],
+            [.left, .leftUp],
+            [.left, .leftDown]
         ]
     }
 }
@@ -137,34 +148,34 @@ struct Bishop: Piece {
 
     var paths: [[Position]] {
         return [
-            [.init(file: 1, rank: 1)],
-            [.init(file: 1, rank: 1), .init(file: 1, rank: 1)],
-            [.init(file: 1, rank: 1), .init(file: 1, rank: 1), .init(file: 1, rank: 1)],
-            [.init(file: 1, rank: 1), .init(file: 1, rank: 1), .init(file: 1, rank: 1), .init(file: 1, rank: 1)],
-            [.init(file: 1, rank: 1), .init(file: 1, rank: 1), .init(file: 1, rank: 1), .init(file: 1, rank: 1), .init(file: 1, rank: 1)],
-            [.init(file: 1, rank: 1), .init(file: 1, rank: 1), .init(file: 1, rank: 1), .init(file: 1, rank: 1), .init(file: 1, rank: 1), .init(file: 1, rank: 1)],
-            [.init(file: 1, rank: 1), .init(file: 1, rank: 1), .init(file: 1, rank: 1), .init(file: 1, rank: 1), .init(file: 1, rank: 1), .init(file: 1, rank: 1), .init(file: 1, rank: 1)],
-            [.init(file: 1, rank: -1)],
-            [.init(file: 1, rank: -1), .init(file: 1, rank: -1)],
-            [.init(file: 1, rank: -1), .init(file: 1, rank: -1), .init(file: 1, rank: -1)],
-            [.init(file: 1, rank: -1), .init(file: 1, rank: -1), .init(file: 1, rank: -1), .init(file: 1, rank: -1)],
-            [.init(file: 1, rank: -1), .init(file: 1, rank: -1), .init(file: 1, rank: -1), .init(file: 1, rank: -1), .init(file: 1, rank: -1)],
-            [.init(file: 1, rank: -1), .init(file: 1, rank: -1), .init(file: 1, rank: -1), .init(file: 1, rank: -1), .init(file: 1, rank: -1), .init(file: 1, rank: -1)],
-            [.init(file: 1, rank: -1), .init(file: 1, rank: -1), .init(file: 1, rank: -1), .init(file: 1, rank: -1), .init(file: 1, rank: -1), .init(file: 1, rank: -1), .init(file: 1, rank: -1)],
-            [.init(file: -1, rank: 1)],
-            [.init(file: -1, rank: 1), .init(file: -1, rank: 1)],
-            [.init(file: -1, rank: 1), .init(file: -1, rank: 1), .init(file: -1, rank: 1)],
-            [.init(file: -1, rank: 1), .init(file: -1, rank: 1), .init(file: -1, rank: 1), .init(file: -1, rank: 1)],
-            [.init(file: -1, rank: 1), .init(file: -1, rank: 1), .init(file: -1, rank: 1), .init(file: -1, rank: 1), .init(file: -1, rank: 1)],
-            [.init(file: -1, rank: 1), .init(file: -1, rank: 1), .init(file: -1, rank: 1), .init(file: -1, rank: 1), .init(file: -1, rank: 1), .init(file: -1, rank: 1)],
-            [.init(file: -1, rank: 1), .init(file: -1, rank: 1), .init(file: -1, rank: 1), .init(file: -1, rank: 1), .init(file: -1, rank: 1), .init(file: -1, rank: 1), .init(file: -1, rank: 1)],
-            [.init(file: -1, rank: -1)],
-            [.init(file: -1, rank: -1), .init(file: -1, rank: -1)],
-            [.init(file: -1, rank: -1), .init(file: -1, rank: -1), .init(file: -1, rank: -1)],
-            [.init(file: -1, rank: -1), .init(file: -1, rank: -1), .init(file: -1, rank: -1), .init(file: -1, rank: -1)],
-            [.init(file: -1, rank: -1), .init(file: -1, rank: -1), .init(file: -1, rank: -1), .init(file: -1, rank: -1), .init(file: -1, rank: -1)],
-            [.init(file: -1, rank: -1), .init(file: -1, rank: -1), .init(file: -1, rank: -1), .init(file: -1, rank: -1), .init(file: -1, rank: -1), .init(file: -1, rank: -1)],
-            [.init(file: -1, rank: -1), .init(file: -1, rank: -1), .init(file: -1, rank: -1), .init(file: -1, rank: -1), .init(file: -1, rank: -1), .init(file: -1, rank: -1), .init(file: -1, rank: -1)]
+            [.rightDown],
+            [.rightDown, .rightDown],
+            [.rightDown, .rightDown, .rightDown],
+            [.rightDown, .rightDown, .rightDown, .rightDown],
+            [.rightDown, .rightDown, .rightDown, .rightDown, .rightDown],
+            [.rightDown, .rightDown, .rightDown, .rightDown, .rightDown, .rightDown],
+            [.rightDown, .rightDown, .rightDown, .rightDown, .rightDown, .rightDown, .rightDown],
+            [.rightUp],
+            [.rightUp, .rightUp],
+            [.rightUp, .rightUp, .rightUp],
+            [.rightUp, .rightUp, .rightUp, .rightUp],
+            [.rightUp, .rightUp, .rightUp, .rightUp, .rightUp],
+            [.rightUp, .rightUp, .rightUp, .rightUp, .rightUp, .rightUp],
+            [.rightUp, .rightUp, .rightUp, .rightUp, .rightUp, .rightUp, .rightUp],
+            [.leftDown],
+            [.leftDown, .leftDown],
+            [.leftDown, .leftDown, .leftDown],
+            [.leftDown, .leftDown, .leftDown, .leftDown],
+            [.leftDown, .leftDown, .leftDown, .leftDown, .leftDown],
+            [.leftDown, .leftDown, .leftDown, .leftDown, .leftDown, .leftDown],
+            [.leftDown, .leftDown, .leftDown, .leftDown, .leftDown, .leftDown, .leftDown],
+            [.leftUp],
+            [.leftUp, .leftUp],
+            [.leftUp, .leftUp, .leftUp],
+            [.leftUp, .leftUp, .leftUp, .leftUp],
+            [.leftUp, .leftUp, .leftUp, .leftUp, .leftUp],
+            [.leftUp, .leftUp, .leftUp, .leftUp, .leftUp, .leftUp],
+            [.leftUp, .leftUp, .leftUp, .leftUp, .leftUp, .leftUp, .leftUp]
         ]
     }
 }
@@ -186,30 +197,34 @@ struct Rook: Piece {
 
     var paths: [[Position]] {
         return [
-            [.init(file: 0, rank: 1)],
-            [.init(file: 0, rank: 1), .init(file: 0, rank: 1)],
-            [.init(file: 0, rank: 1), .init(file: 0, rank: 1), .init(file: 0, rank: 1)],
-            [.init(file: 0, rank: 1), .init(file: 0, rank: 1), .init(file: 0, rank: 1), .init(file: 0, rank: 1)],
-            [.init(file: 0, rank: 1), .init(file: 0, rank: 1), .init(file: 0, rank: 1), .init(file: 0, rank: 1), .init(file: 0, rank: 1)],
-            [.init(file: 0, rank: 1), .init(file: 0, rank: 1), .init(file: 0, rank: 1), .init(file: 0, rank: 1), .init(file: 0, rank: 1), .init(file: 0, rank: 1)],
-            [.init(file: 1, rank: 0)],
-            [.init(file: 1, rank: 0), .init(file: 1, rank: 0)],
-            [.init(file: 1, rank: 0), .init(file: 1, rank: 0), .init(file: 1, rank: 0)],
-            [.init(file: 1, rank: 0), .init(file: 1, rank: 0), .init(file: 1, rank: 0), .init(file: 1, rank: 0)],
-            [.init(file: 1, rank: 0), .init(file: 1, rank: 0), .init(file: 1, rank: 0), .init(file: 1, rank: 0), .init(file: 1, rank: 0)],
-            [.init(file: 1, rank: 0), .init(file: 1, rank: 0), .init(file: 1, rank: 0), .init(file: 1, rank: 0), .init(file: 1, rank: 0), .init(file: 1, rank: 0)],
-            [.init(file: 0, rank: -1)],
-            [.init(file: 0, rank: -1), .init(file: 0, rank: -1)],
-            [.init(file: 0, rank: -1), .init(file: 0, rank: -1), .init(file: 0, rank: -1)],
-            [.init(file: 0, rank: -1), .init(file: 0, rank: -1), .init(file: 0, rank: -1), .init(file: 0, rank: -1)],
-            [.init(file: 0, rank: -1), .init(file: 0, rank: -1), .init(file: 0, rank: -1), .init(file: 0, rank: -1), .init(file: 0, rank: -1)],
-            [.init(file: 0, rank: -1), .init(file: 0, rank: -1), .init(file: 0, rank: -1), .init(file: 0, rank: -1), .init(file: 0, rank: -1), .init(file: 0, rank: -1)],
-            [.init(file: -1, rank: 0)],
-            [.init(file: -1, rank: 0), .init(file: -1, rank: 0)],
-            [.init(file: -1, rank: 0), .init(file: -1, rank: 0), .init(file: -1, rank: 0)],
-            [.init(file: -1, rank: 0), .init(file: -1, rank: 0), .init(file: -1, rank: 0), .init(file: -1, rank: 0)],
-            [.init(file: -1, rank: 0), .init(file: -1, rank: 0), .init(file: -1, rank: 0), .init(file: -1, rank: 0), .init(file: -1, rank: 0)],
-            [.init(file: -1, rank: 0), .init(file: -1, rank: 0), .init(file: -1, rank: 0), .init(file: -1, rank: 0), .init(file: -1, rank: 0), .init(file: -1, rank: 0)]
+            [.up],
+            [.up, .up],
+            [.up, .up, .up],
+            [.up, .up, .up, .up],
+            [.up, .up, .up, .up, .up],
+            [.up, .up, .up, .up, .up, .up],
+            [.up, .up, .up, .up, .up, .up, .up],
+            [.right],
+            [.right, .right],
+            [.right, .right, .right],
+            [.right, .right, .right, .right],
+            [.right, .right, .right, .right, .right],
+            [.right, .right, .right, .right, .right, .right],
+            [.right, .right, .right, .right, .right, .right, .right],
+            [.down],
+            [.down, .down],
+            [.down, .down, .down],
+            [.down, .down, .down, .down],
+            [.down, .down, .down, .down, .down],
+            [.down, .down, .down, .down, .down, .down],
+            [.down, .down, .down, .down, .down, .down, .down],
+            [.left],
+            [.left, .left],
+            [.left, .left, .left],
+            [.left, .left, .left, .left],
+            [.left, .left, .left, .left, .left],
+            [.left, .left, .left, .left, .left, .left],
+            [.left, .left, .left, .left, .left, .left, .left]
         ]
     }
 }
@@ -230,59 +245,6 @@ struct Queen: Piece {
     }
 
     var paths: [[Position]] {
-        return [
-            [.init(file: 1, rank: 1)],
-            [.init(file: 1, rank: 1), .init(file: 1, rank: 1)],
-            [.init(file: 1, rank: 1), .init(file: 1, rank: 1), .init(file: 1, rank: 1)],
-            [.init(file: 1, rank: 1), .init(file: 1, rank: 1), .init(file: 1, rank: 1), .init(file: 1, rank: 1)],
-            [.init(file: 1, rank: 1), .init(file: 1, rank: 1), .init(file: 1, rank: 1), .init(file: 1, rank: 1), .init(file: 1, rank: 1)],
-            [.init(file: 1, rank: 1), .init(file: 1, rank: 1), .init(file: 1, rank: 1), .init(file: 1, rank: 1), .init(file: 1, rank: 1), .init(file: 1, rank: 1)],
-            [.init(file: 1, rank: 1), .init(file: 1, rank: 1), .init(file: 1, rank: 1), .init(file: 1, rank: 1), .init(file: 1, rank: 1), .init(file: 1, rank: 1), .init(file: 1, rank: 1)],
-            [.init(file: 1, rank: -1)],
-            [.init(file: 1, rank: -1), .init(file: 1, rank: -1)],
-            [.init(file: 1, rank: -1), .init(file: 1, rank: -1), .init(file: 1, rank: -1)],
-            [.init(file: 1, rank: -1), .init(file: 1, rank: -1), .init(file: 1, rank: -1), .init(file: 1, rank: -1)],
-            [.init(file: 1, rank: -1), .init(file: 1, rank: -1), .init(file: 1, rank: -1), .init(file: 1, rank: -1), .init(file: 1, rank: -1)],
-            [.init(file: 1, rank: -1), .init(file: 1, rank: -1), .init(file: 1, rank: -1), .init(file: 1, rank: -1), .init(file: 1, rank: -1), .init(file: 1, rank: -1)],
-            [.init(file: 1, rank: -1), .init(file: 1, rank: -1), .init(file: 1, rank: -1), .init(file: 1, rank: -1), .init(file: 1, rank: -1), .init(file: 1, rank: -1), .init(file: 1, rank: -1)],
-            [.init(file: -1, rank: 1)],
-            [.init(file: -1, rank: 1), .init(file: -1, rank: 1)],
-            [.init(file: -1, rank: 1), .init(file: -1, rank: 1), .init(file: -1, rank: 1)],
-            [.init(file: -1, rank: 1), .init(file: -1, rank: 1), .init(file: -1, rank: 1), .init(file: -1, rank: 1)],
-            [.init(file: -1, rank: 1), .init(file: -1, rank: 1), .init(file: -1, rank: 1), .init(file: -1, rank: 1), .init(file: -1, rank: 1)],
-            [.init(file: -1, rank: 1), .init(file: -1, rank: 1), .init(file: -1, rank: 1), .init(file: -1, rank: 1), .init(file: -1, rank: 1), .init(file: -1, rank: 1)],
-            [.init(file: -1, rank: 1), .init(file: -1, rank: 1), .init(file: -1, rank: 1), .init(file: -1, rank: 1), .init(file: -1, rank: 1), .init(file: -1, rank: 1), .init(file: -1, rank: 1)],
-            [.init(file: -1, rank: -1)],
-            [.init(file: -1, rank: -1), .init(file: -1, rank: -1)],
-            [.init(file: -1, rank: -1), .init(file: -1, rank: -1), .init(file: -1, rank: -1)],
-            [.init(file: -1, rank: -1), .init(file: -1, rank: -1), .init(file: -1, rank: -1), .init(file: -1, rank: -1)],
-            [.init(file: -1, rank: -1), .init(file: -1, rank: -1), .init(file: -1, rank: -1), .init(file: -1, rank: -1), .init(file: -1, rank: -1)],
-            [.init(file: -1, rank: -1), .init(file: -1, rank: -1), .init(file: -1, rank: -1), .init(file: -1, rank: -1), .init(file: -1, rank: -1), .init(file: -1, rank: -1)],
-            [.init(file: -1, rank: -1), .init(file: -1, rank: -1), .init(file: -1, rank: -1), .init(file: -1, rank: -1), .init(file: -1, rank: -1), .init(file: -1, rank: -1), .init(file: -1, rank: -1)],
-            [.init(file: 0, rank: 1)],
-            [.init(file: 0, rank: 1), .init(file: 0, rank: 1)],
-            [.init(file: 0, rank: 1), .init(file: 0, rank: 1), .init(file: 0, rank: 1)],
-            [.init(file: 0, rank: 1), .init(file: 0, rank: 1), .init(file: 0, rank: 1), .init(file: 0, rank: 1)],
-            [.init(file: 0, rank: 1), .init(file: 0, rank: 1), .init(file: 0, rank: 1), .init(file: 0, rank: 1), .init(file: 0, rank: 1)],
-            [.init(file: 0, rank: 1), .init(file: 0, rank: 1), .init(file: 0, rank: 1), .init(file: 0, rank: 1), .init(file: 0, rank: 1), .init(file: 0, rank: 1)],
-            [.init(file: 1, rank: 0)],
-            [.init(file: 1, rank: 0), .init(file: 1, rank: 0)],
-            [.init(file: 1, rank: 0), .init(file: 1, rank: 0), .init(file: 1, rank: 0)],
-            [.init(file: 1, rank: 0), .init(file: 1, rank: 0), .init(file: 1, rank: 0), .init(file: 1, rank: 0)],
-            [.init(file: 1, rank: 0), .init(file: 1, rank: 0), .init(file: 1, rank: 0), .init(file: 1, rank: 0), .init(file: 1, rank: 0)],
-            [.init(file: 1, rank: 0), .init(file: 1, rank: 0), .init(file: 1, rank: 0), .init(file: 1, rank: 0), .init(file: 1, rank: 0), .init(file: 1, rank: 0)],
-            [.init(file: 0, rank: -1)],
-            [.init(file: 0, rank: -1), .init(file: 0, rank: -1)],
-            [.init(file: 0, rank: -1), .init(file: 0, rank: -1), .init(file: 0, rank: -1)],
-            [.init(file: 0, rank: -1), .init(file: 0, rank: -1), .init(file: 0, rank: -1), .init(file: 0, rank: -1)],
-            [.init(file: 0, rank: -1), .init(file: 0, rank: -1), .init(file: 0, rank: -1), .init(file: 0, rank: -1), .init(file: 0, rank: -1)],
-            [.init(file: 0, rank: -1), .init(file: 0, rank: -1), .init(file: 0, rank: -1), .init(file: 0, rank: -1), .init(file: 0, rank: -1), .init(file: 0, rank: -1)],
-            [.init(file: -1, rank: 0)],
-            [.init(file: -1, rank: 0), .init(file: -1, rank: 0)],
-            [.init(file: -1, rank: 0), .init(file: -1, rank: 0), .init(file: -1, rank: 0)],
-            [.init(file: -1, rank: 0), .init(file: -1, rank: 0), .init(file: -1, rank: 0), .init(file: -1, rank: 0)],
-            [.init(file: -1, rank: 0), .init(file: -1, rank: 0), .init(file: -1, rank: 0), .init(file: -1, rank: 0), .init(file: -1, rank: 0)],
-            [.init(file: -1, rank: 0), .init(file: -1, rank: 0), .init(file: -1, rank: 0), .init(file: -1, rank: 0), .init(file: -1, rank: 0), .init(file: -1, rank: 0)]
-        ]
+        return Bishop(color: color).paths + Rook(color: color).paths
     }
 }
